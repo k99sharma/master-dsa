@@ -56,12 +56,14 @@ public class SinglyLinkedList<T> {
             return;
         }
 
-        if(size == 1){
+        else if(size == 1){
             this.head = null;
-            return;
         }
 
-        this.head = this.head.getNext();
+        else{
+            this.head = this.head.getNext();
+        }
+
         this.size--;
     }
 
@@ -70,16 +72,19 @@ public class SinglyLinkedList<T> {
             throw new InvalidPosition();
         }
 
-        if(position > size){
+        else if(position > size){
             throw new InvalidPosition();
         }
 
-        Node<T> start = head;
-        for(int i=1; i<position-1; i++){
-            start = start.getNext();
+        else {
+            Node<T> start = head;
+            for(int i=1; i<position-1; i++){
+                start = start.getNext();
+            }
+
+            start.setNext(start.getNext().getNext());
         }
 
-        start.setNext(start.getNext().getNext());
         this.size--;
     }
 
@@ -89,18 +94,31 @@ public class SinglyLinkedList<T> {
             return;
         }
 
-        if(size == 1){
+        else if(size == 1){
             this.head = null;
-            return;
         }
 
+        else{
+            Node<T> start = head;
+            while(start.getNext() != null && start.getNext().getNext() != null){
+                start = start.getNext();
+            }
+            start.setNext(null);
+        }
+
+        this.size--;
+    }
+
+    public boolean contains(T data){
         Node<T> start = head;
-        while(start.getNext() != null && start.getNext().getNext() != null){
+        while(start != null){
+            if(start.getData() == data)
+                return true;
+
             start = start.getNext();
         }
 
-        start.setNext(null);
-        this.size--;
+        return false;
     }
 
     public boolean contains(Node<T> node){
@@ -116,7 +134,10 @@ public class SinglyLinkedList<T> {
     }
 
     public void display(){
-        System.out.println(toString());
+        if(size == 0)
+            System.out.println("List is empty");
+        else
+            System.out.println(toString());
     }
 
     @Override
